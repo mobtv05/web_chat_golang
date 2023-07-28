@@ -1,10 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"io"
 	"log"
 	"net/http"
+	"strings"
 )
 
 var (
@@ -13,11 +15,14 @@ var (
 )
 
 func hendler(w http.ResponseWriter, r *http.Request) {
-	log.Println("Client conected: " + r.RemoteAddr)
-	defer log.Println("Client disconected: " + r.RemoteAddr)
+	//log.Println("Client conected: " + r.RemoteAddr)
+	ip := strings.Split(r.RemoteAddr, ":")[0]
+	//defer log.Println("Client disconected: " + r.RemoteAddr)
 	text = text + "<br>" + r.FormValue("message")
 	tmpl.Execute(w, text)
 	io.WriteString(w, text)
+	fmt.Println("Message from: ", ip, " and the text of this message", text)
+	// w.Write([]byte(response))
 
 }
 
